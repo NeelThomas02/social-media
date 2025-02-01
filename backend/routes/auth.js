@@ -5,35 +5,31 @@ const User = require("../models/user");
 
 const router = express.Router();
 
-// Register User (Includes Email)
+// Register Route
 router.post("/register", async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+      const { username, email, password, firstName, lastName, bio, location, profilePicture } = req.body;
 
-    // Check if username already exists
-    const existingUser = await User.findOne({ username });
-    if (existingUser) {
-      return res.status(400).json({ message: "Username already taken" });
-    }
+      // Your logic for user registration
+      const newUser = new User({
+          username,
+          email,
+          password,
+          firstName,
+          lastName,
+          bio,
+          location,
+          profilePicture,
+      });
 
-    // Check if email already exists
-    const existingEmail = await User.findOne({ email });
-    if (existingEmail) {
-      return res.status(400).json({ message: "Email already in use" });
-    }
-
-    // Hash password before saving
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // Create new user with email included
-    const newUser = new User({ username, email, password: hashedPassword });
-
-    await newUser.save();
-    res.status(201).json({ message: "User registered successfully" });
-  } catch (error) {
-    res.status(500).json({ message: "Server error" });
+      await newUser.save();
+      res.status(201).json({ message: "User registered successfully", user: newUser });
+  } catch (err) {
+      console.log(err);
+      res.status(500).json({ message: "Server error" });
   }
 });
+
 
 // Login User (Uses Username Instead of Email)
 router.post("/login", async (req, res) => {

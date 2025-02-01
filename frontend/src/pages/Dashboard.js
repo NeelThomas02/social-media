@@ -1,6 +1,5 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import Navbar from "../components/Navbar";
 import styles from "../styles/Dashboard.module.css"; // Import CSS Module
 
 const Dashboard = () => {
@@ -8,7 +7,6 @@ const Dashboard = () => {
 
   return (
     <div>
-      <Navbar />
       <div className={styles.dashboardContainer}>
         <h1>Welcome to Your Dashboard</h1>
         {user ? (
