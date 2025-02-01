@@ -57,7 +57,9 @@ router.post("/login", async (req, res) => {
       expiresIn: "1d",
     });
 
-    res.status(200).json({ token, user });
+    // Send response with token and user data (excluding password)
+    const { password: _, ...userData } = user.toObject(); // Exclude password from response
+    res.status(200).json({ token, user: userData });  // Return the rest of the user data
   } catch (error) {
     res.status(500).json({ message: "Server error" });
   }
